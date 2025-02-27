@@ -81,7 +81,7 @@ class TodoItem extends StatelessWidget {
       child: Row(
         children: [
           const Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -94,12 +94,16 @@ class TodoItem extends StatelessWidget {
               ),
               Text(
                 'DeadLine: July 25,2021',
-                style: TextStyle(color: Colors.red, shadows: [
-                  Shadow(
-                    color: Colors.black,
-                    blurRadius: 1,
-                  ),
-                ]),
+                style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0x7AE0E0E0),
+                    shadows: [
+                      Shadow(
+                        color: Colors.black,
+                        blurRadius: 1,
+                      ),
+                    ]),
               )
             ],
           ),
