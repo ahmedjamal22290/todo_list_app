@@ -67,6 +67,11 @@ class _HomeViewBodyState extends State<HomeViewBody> {
             },
           ),
         ),
+        Expanded(
+          child: Center(
+            child: content[selectedIndex],
+          ),
+        )
       ],
     );
   }
