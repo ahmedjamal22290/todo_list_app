@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list_app/constants.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
@@ -35,16 +36,14 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                   padding: const EdgeInsets.only(top: 5),
                   margin: const EdgeInsets.only(top: 30),
                   decoration: BoxDecoration(
-                    color: selectedIndex == index
-                        ? const Color(0xff2A9D8F)
-                        : const Color(0xff264653),
+                    color: selectedIndex == index ? kFirstColor : kSecondColor,
                   ),
                   child: Center(
                     child: Text(
                       categories[index],
                       style: TextStyle(
                         color: selectedIndex == index
-                            ? const Color(0xffE9C46A)
+                            ? kFontFirstColor
                             : Colors.white,
                         fontSize: 21,
                         fontWeight: FontWeight.bold,
