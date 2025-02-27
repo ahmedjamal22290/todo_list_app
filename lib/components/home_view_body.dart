@@ -12,7 +12,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   final List<String> categories = ["Complete", "Pending", "Overdue"];
   final List<Widget> content = [
     const Center(child: Text("Complete", style: TextStyle(fontSize: 18))),
-    const Center(child: Text("Pending", style: TextStyle(fontSize: 18))),
+    const Center(child: TodoItem()),
     const Center(child: Text("Overdue", style: TextStyle(fontSize: 18))),
   ];
   int selectedIndex = 0;
@@ -36,7 +36,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                   padding: const EdgeInsets.only(top: 5),
                   margin: const EdgeInsets.only(top: 30),
                   decoration: BoxDecoration(
-                    color: selectedIndex == index ? kFirstColor : kSecondColor,
+                    color:
+                        selectedIndex == index ? kHighlightColor : kSecondColor,
                   ),
                   child: Center(
                     child: Text(
@@ -61,6 +62,57 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           ),
         )
       ],
+    );
+  }
+}
+
+class TodoItem extends StatelessWidget {
+  const TodoItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
+      decoration: BoxDecoration(
+        color: const Color(0xff2A2A2A),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: [
+          const Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Title',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xffE0E0E0),
+                ),
+              ),
+              Text(
+                'DeadLine: July 25,2021',
+                style: TextStyle(color: Colors.red, shadows: [
+                  Shadow(
+                    color: Colors.black,
+                    blurRadius: 1,
+                  ),
+                ]),
+              )
+            ],
+          ),
+          const Spacer(),
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.check_box_outline_blank_rounded,
+                size: 32,
+                color: Colors.white,
+              ))
+        ],
+      ),
     );
   }
 }
