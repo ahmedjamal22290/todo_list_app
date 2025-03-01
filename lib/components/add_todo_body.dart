@@ -28,15 +28,22 @@ class AddTodoBody extends StatelessWidget {
   }
 }
 
-class TimeFieldWidget extends StatelessWidget {
+class TimeFieldWidget extends StatefulWidget {
   const TimeFieldWidget({
     super.key,
   });
 
   @override
+  State<TimeFieldWidget> createState() => _TimeFieldWidgetState();
+}
+
+class _TimeFieldWidgetState extends State<TimeFieldWidget> {
+  TextEditingController _controller = TextEditingController();
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
       readOnly: true,
+      controller: _controller,
       decoration: InputDecoration(
         labelText: 'Select Date',
         suffixIcon: const Icon(Icons.calendar_today_rounded),
@@ -54,6 +61,8 @@ class TimeFieldWidget extends StatelessWidget {
           firstDate: DateTime.now(),
           lastDate: DateTime(2100),
         );
+        _controller.text =
+            "${months[picked == null ? 0 : picked.month]} ${picked?.day},${picked?.year}";
       },
     );
   }
