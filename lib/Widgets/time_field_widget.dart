@@ -18,6 +18,11 @@ class _TimeFieldWidgetState extends State<TimeFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: (value) {
+        if (value == "" || value == null) {
+          return "This field is required";
+        }
+      },
       readOnly: true,
       controller: widget.controller,
       decoration: InputDecoration(

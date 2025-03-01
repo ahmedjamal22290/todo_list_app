@@ -4,12 +4,14 @@ import 'package:todo_list_app/constants.dart';
 class DsecriptionFieldWidget extends StatelessWidget {
   const DsecriptionFieldWidget({
     super.key,
+    required this.onSaved,
   });
-
+  final void Function(String?)? onSaved;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       maxLines: 5,
+      onSaved: onSaved,
       decoration: InputDecoration(
         label: const Text(
           'Description ',
