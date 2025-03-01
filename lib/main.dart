@@ -6,9 +6,10 @@ import 'package:todo_list_app/views/add_todo_view.dart';
 import 'package:todo_list_app/views/home_view.dart';
 
 void main() async {
-  Hive.initFlutter();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
   Hive.registerAdapter(TodoModelAdapter());
-  Hive.openBox<TodoModel>(kBoxName);
+  await Hive.openBox<TodoModel>(kBoxName);
   runApp(const TodoListApp());
 }
 
