@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:todo_list_app/Widgets/custom_button.dart';
@@ -94,7 +92,6 @@ class _AddTodoBodyState extends State<AddTodoBody> {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
                       Hive.box<TodoModel>(kBoxName).add(todo);
-                      log(Hive.box<TodoModel>(kBoxName).values.last.title);
                       Navigator.pop(context);
                     }
                   },

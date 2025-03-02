@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list_app/constants.dart';
+import 'package:todo_list_app/models/todo_model.dart';
 
-class TodoItem extends StatelessWidget {
-  const TodoItem({super.key});
+class TodoItem extends StatefulWidget {
+  const TodoItem({super.key, required this.todo});
+  final TodoModel todo;
 
+  @override
+  State<TodoItem> createState() => _TodoItemState();
+}
+
+class _TodoItemState extends State<TodoItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,21 +22,21 @@ class TodoItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Column(
+          Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Title',
-                style: TextStyle(
+                widget.todo.title,
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Color(0xffE0E0E0),
                 ),
               ),
               Text(
-                'DeadLine: July 25,2021',
-                style: TextStyle(
+                'DeadLine: ${months[widget.todo.date.month]} ${widget.todo.date.day},${widget.todo.date.year}',
+                style: const TextStyle(
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.w400,
                     color: Color(0x7AE0E0E0),
@@ -43,9 +51,20 @@ class TodoItem extends StatelessWidget {
           ),
           const Spacer(),
           IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.check_box_outline_blank_rounded,
+              onPressed: () {
+                if (widget.todo.status != 'C') {
+                  widget.todo.status = 'C';
+                } else {
+                  widget.todo.status = 'P';
+                }
+                setState(() {});
+              },
+              icon: Icon(
+                widget.todo.status == 'P'
+                    ? Icons.check_box_outline_blank_rounded
+                    : widget.todo.status == 'C'
+                        ? Icons.check_box
+                        : Icons.indeterminate_check_box_outlined,
                 size: 32,
                 color: Colors.white,
               ))

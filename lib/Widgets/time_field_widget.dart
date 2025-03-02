@@ -22,6 +22,7 @@ class _TimeFieldWidgetState extends State<TimeFieldWidget> {
         if (value == "" || value == null) {
           return "This field is required";
         }
+        return null;
       },
       readOnly: true,
       controller: widget.controller,

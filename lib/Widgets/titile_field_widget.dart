@@ -14,6 +14,7 @@ class TitleFieldWidget extends StatelessWidget {
         if (value == null || value.isEmpty) {
           return "This Field is required";
         }
+        return null;
       },
       style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
