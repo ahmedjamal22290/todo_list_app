@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:todo_list_app/constants.dart';
 import 'package:todo_list_app/cubit/fetch_todo_cubit.dart';
 import 'package:todo_list_app/models/todo_model.dart';
@@ -21,7 +20,7 @@ class _TodoItemState extends State<TodoItem> {
       return const Color(0xffE53935);
     } else if (todo.status == 'P') {
       return todo.date.difference(DateTime.now()).inDays <= 1
-          ? Colors.orange
+          ? const Color(0xFFCD7B00)
           : const Color(0xff2A2A2A);
     }
     return Colors.grey;
@@ -30,7 +29,7 @@ class _TodoItemState extends State<TodoItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 7),
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
       decoration: BoxDecoration(
         color: getTodoColor(widget.todo),
@@ -51,8 +50,8 @@ class _TodoItemState extends State<TodoItem> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: widget.todo.status == 'C'
-                      ? Color(0xC3E0E0E0)
-                      : Color(0xffE0E0E0),
+                      ? const Color(0xC3E0E0E0)
+                      : const Color(0xffE0E0E0),
                 ),
               ),
               Text(
@@ -72,22 +71,28 @@ class _TodoItemState extends State<TodoItem> {
           IconButton(
               onPressed: () {
                 final cubit = BlocProvider.of<FetchTodoCubit>(context);
-
+                final String char = widget.todo.status;
                 setState(() {
-                  if (widget.todo.status == 'P' || widget.todo.status == 'O') {
+                  if (widget.todo.status == 'P') {
                     widget.todo.status = 'C';
+                  } else if (widget.todo.status == 'O') {
+                    widget.todo.status = 'C';
+                    // cubit.fetchCompleteTodos();
                   } else {
                     widget.todo.status = 'P';
                   }
                   widget.todo.save();
                 });
-
-                if (widget.todo.status == 'C') {
-                  cubit.fetchOverdueTodos();
+                if (char == 'C') {
                   cubit.fetchPendingTodos();
-                } else if (widget.todo.status == 'P') {
                   cubit.fetchOverdueTodos();
                   cubit.fetchCompleteTodos();
+                } else if (char == 'P') {
+                  cubit.fetchPendingTodos();
+                  // cubit.fetchCompleteTodos();
+                } else {
+                  cubit.fetchOverdueTodos();
+                  // cubit.fetchCompleteTodos();
                 }
               },
               icon: Icon(
