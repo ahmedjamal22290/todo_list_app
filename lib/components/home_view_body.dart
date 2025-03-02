@@ -29,6 +29,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   @override
   void initState() {
     super.initState();
+    context.read<FetchTodoCubit>().fetchCompleteTodos();
+    context.read<FetchTodoCubit>().fetchOverdueTodos();
     context.read<FetchTodoCubit>().fetchPendingTodos();
   }
 

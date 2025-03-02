@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 part 'todo_model.g.dart';
 
 @HiveType(typeId: 0)
-class TodoModel {
+class TodoModel extends HiveObject {
   TodoModel(
       {required this.date,
       this.description,

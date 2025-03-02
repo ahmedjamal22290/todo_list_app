@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:todo_list_app/constants.dart';
 import 'package:todo_list_app/cubit/fetch_todo_cubit.dart';
 import 'package:todo_list_app/models/todo_model.dart';
@@ -54,16 +55,24 @@ class _TodoItemState extends State<TodoItem> {
           const Spacer(),
           IconButton(
               onPressed: () {
-                if (widget.todo.status != 'C') {
-                  widget.todo.status = 'C';
-                  BlocProvider.of<FetchTodoCubit>(context).fetchOverdueTodos();
-                  BlocProvider.of<FetchTodoCubit>(context).fetchPendingTodos();
-                } else {
-                  BlocProvider.of<FetchTodoCubit>(context).fetchCompleteTodos();
-                  BlocProvider.of<FetchTodoCubit>(context).fetchPendingTodos();
-                  widget.todo.status = 'P';
+                final cubit = BlocProvider.of<FetchTodoCubit>(context);
+
+                setState(() {
+                  if (widget.todo.status == 'P' || widget.todo.status == 'O') {
+                    widget.todo.status = 'C';
+                  } else {
+                    widget.todo.status = 'P';
+                  }
+                  widget.todo.save();
+                });
+
+                if (widget.todo.status == 'C') {
+                  cubit.fetchOverdueTodos();
+                  cubit.fetchPendingTodos();
+                } else if (widget.todo.status == 'P') {
+                  cubit.fetchOverdueTodos();
+                  cubit.fetchCompleteTodos();
                 }
-                setState(() {});
               },
               icon: Icon(
                 widget.todo.status == 'P'
