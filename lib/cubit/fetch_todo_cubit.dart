@@ -23,9 +23,7 @@ class FetchTodoCubit extends Cubit<FetchTodoState> {
     var todosBox = Hive.box<TodoModel>(kBoxName).values.toList();
     List<TodoModel> overdueTodos = [];
     for (int i = 0; i < todosBox.length; i++) {
-      if (todosBox[i]
-              .date
-              .isBefore(DateTime.now().add(const Duration(days: 1))) &&
+      if (todosBox[i].date.isBefore(DateTime.now()) &&
           todosBox[i].status != 'C') {
         overdueTodos.add(todosBox[i]);
         todosBox[i].status = 'O';

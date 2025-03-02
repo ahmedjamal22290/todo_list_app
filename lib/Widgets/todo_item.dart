@@ -14,13 +14,26 @@ class TodoItem extends StatefulWidget {
 }
 
 class _TodoItemState extends State<TodoItem> {
+  Color getTodoColor(TodoModel todo) {
+    if (todo.status == 'C') {
+      return const Color(0xff43A047);
+    } else if (todo.status == 'O') {
+      return const Color(0xffE53935);
+    } else if (todo.status == 'P') {
+      return todo.date.difference(DateTime.now()).inDays <= 1
+          ? Colors.orange
+          : const Color(0xff2A2A2A);
+    }
+    return Colors.grey;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5),
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
       decoration: BoxDecoration(
-        color: const Color(0xff2A2A2A),
+        color: getTodoColor(widget.todo),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -31,24 +44,27 @@ class _TodoItemState extends State<TodoItem> {
             children: [
               Text(
                 widget.todo.title,
-                style: const TextStyle(
+                style: TextStyle(
+                  decoration: widget.todo.status == 'C'
+                      ? TextDecoration.lineThrough
+                      : null,
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xffE0E0E0),
+                  color: widget.todo.status == 'C'
+                      ? Color(0xC3E0E0E0)
+                      : Color(0xffE0E0E0),
                 ),
               ),
               Text(
                 'DeadLine: ${months[widget.todo.date.month]} ${widget.todo.date.day},${widget.todo.date.year}',
-                style: const TextStyle(
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0x7AE0E0E0),
-                    shadows: [
-                      Shadow(
-                        color: Colors.black,
-                        blurRadius: 1,
-                      ),
-                    ]),
+                style: TextStyle(
+                  decoration: widget.todo.status == 'O'
+                      ? TextDecoration.lineThrough
+                      : null,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0x9DE0E0E0),
+                ),
               )
             ],
           ),
