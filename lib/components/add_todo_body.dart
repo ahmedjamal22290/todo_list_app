@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:todo_list_app/Widgets/custom_button.dart';
 import 'package:todo_list_app/Widgets/descripition_field_widget.dart';
 import 'package:todo_list_app/Widgets/time_field_widget.dart';
 import 'package:todo_list_app/Widgets/titile_field_widget.dart';
 import 'package:todo_list_app/constants.dart';
+import 'package:todo_list_app/cubit/fetch_todo_cubit.dart';
 import 'package:todo_list_app/models/todo_model.dart';
 
 class AddTodoBody extends StatefulWidget {
@@ -92,6 +94,8 @@ class _AddTodoBodyState extends State<AddTodoBody> {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
                       Hive.box<TodoModel>(kBoxName).add(todo);
+                      BlocProvider.of<FetchTodoCubit>(context)
+                          .fetchPendingTodos();
                       Navigator.pop(context);
                     }
                   },

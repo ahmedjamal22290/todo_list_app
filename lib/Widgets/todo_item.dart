@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_app/constants.dart';
+import 'package:todo_list_app/cubit/fetch_todo_cubit.dart';
 import 'package:todo_list_app/models/todo_model.dart';
 
 class TodoItem extends StatefulWidget {
@@ -54,7 +56,11 @@ class _TodoItemState extends State<TodoItem> {
               onPressed: () {
                 if (widget.todo.status != 'C') {
                   widget.todo.status = 'C';
+                  BlocProvider.of<FetchTodoCubit>(context).fetchOverdueTodos();
+                  BlocProvider.of<FetchTodoCubit>(context).fetchPendingTodos();
                 } else {
+                  BlocProvider.of<FetchTodoCubit>(context).fetchCompleteTodos();
+                  BlocProvider.of<FetchTodoCubit>(context).fetchPendingTodos();
                   widget.todo.status = 'P';
                 }
                 setState(() {});
