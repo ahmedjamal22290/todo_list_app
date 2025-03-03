@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_app/Widgets/custom_button.dart';
+import 'package:todo_list_app/Widgets/custom_descripition_field.dart';
 import 'package:todo_list_app/Widgets/descripition_field_widget.dart';
 import 'package:todo_list_app/Widgets/time_field_widget.dart';
 import 'package:todo_list_app/Widgets/titile_field_widget.dart';
@@ -45,9 +46,9 @@ class _EditTodoBodyState extends State<EditTodoBody> {
         const SizedBox(height: 30),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: DsecriptionFieldWidget(
+          child: CustomDsecriptionFieldWidget(
             controller: _descripController,
-            onSaved: (value) {
+            onChange: (value) {
               _descripController.text = value ?? widget.todo.description ?? "";
               widget.todo.description = value;
               setState(() {});
