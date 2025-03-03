@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_app/constants.dart';
-import 'package:todo_list_app/cubit/fetch_todo_cubit.dart';
 import 'package:todo_list_app/models/todo_model.dart';
-import 'package:todo_list_app/views/edit_todo_view.dart';
 
-class TodoItem extends StatefulWidget {
-  const TodoItem({super.key, required this.todo, required this.onLongPress});
+class SelectedTodoItem extends StatefulWidget {
+  const SelectedTodoItem(
+      {super.key, required this.todo, required this.onTap, this.onLongPress});
   final TodoModel todo;
+  final void Function()? onTap;
   final void Function()? onLongPress;
-
   @override
-  State<TodoItem> createState() => _TodoItemState();
+  State<SelectedTodoItem> createState() => _SelectedTodoItemState();
 }
 
-class _TodoItemState extends State<TodoItem> {
+class _SelectedTodoItemState extends State<SelectedTodoItem> {
+  bool selected = false;
   Color getTodoColor(TodoModel todo) {
     if (todo.status == 'C') {
       return const Color(0xff43A047);
@@ -31,16 +30,16 @@ class _TodoItemState extends State<TodoItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return EditTodoView(todo: widget.todo);
-        }));
-      },
       onLongPress: widget.onLongPress,
+      onTap: widget.onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 7),
         padding: const EdgeInsets.only(top: 15, bottom: 15, left: 15),
         decoration: BoxDecoration(
+          border: Border.all(
+            color: kHighlightColor,
+            width: 2.2,
+          ),
           color: getTodoColor(widget.todo),
           borderRadius: BorderRadius.circular(20),
         ),
@@ -79,36 +78,17 @@ class _TodoItemState extends State<TodoItem> {
             const Spacer(),
             IconButton(
                 onPressed: () {
-                  final cubit = BlocProvider.of<FetchTodoCubit>(context);
-                  final String char = widget.todo.status;
-                  setState(() {
-                    if (widget.todo.status == 'P') {
-                      widget.todo.status = 'C';
-                    } else if (widget.todo.status == 'O') {
-                      widget.todo.status = 'C';
-                    } else {
-                      widget.todo.status = 'P';
-                    }
-                    widget.todo.save();
-                  });
-                  if (char == 'C') {
-                    cubit.fetchPendingTodos();
-                    cubit.fetchOverdueTodos();
-                    cubit.fetchCompleteTodos();
-                  } else if (char == 'P') {
-                    cubit.fetchPendingTodos();
+                  if (selected) {
+                    selected = false;
                   } else {
-                    cubit.fetchOverdueTodos();
+                    selected = true;
                   }
+                  setState(() {});
                 },
                 icon: Icon(
-                  widget.todo.status == 'P'
-                      ? Icons.check_box_outline_blank_rounded
-                      : widget.todo.status == 'C'
-                          ? Icons.check_box
-                          : Icons.indeterminate_check_box_outlined,
+                  selected ? Icons.circle : Icons.circle_outlined,
                   size: 32,
-                  color: Colors.white,
+                  color: kHighlightColor,
                 ))
           ],
         ),

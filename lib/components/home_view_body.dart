@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:todo_list_app/Widgets/custom_animated_bar.dart';
+import 'package:todo_list_app/Widgets/selected_todo_item.dart';
 import 'package:todo_list_app/Widgets/todo_item.dart';
 import 'package:todo_list_app/constants.dart';
 import 'package:todo_list_app/cubit/fetch_todo_cubit.dart';
@@ -17,13 +18,7 @@ class HomeViewBody extends StatefulWidget {
 
 class _HomeViewBodyState extends State<HomeViewBody> {
   final List<String> categories = ["Complete", "Pending", "Overdue"];
-  final List<Widget> content = [
-    const Center(child: Text("Complete", style: TextStyle(fontSize: 18))),
-    TodoItem(
-      todo: Hive.box<TodoModel>(kBoxName).values.first,
-    ),
-    const Center(child: Text("Overdue", style: TextStyle(fontSize: 18))),
-  ];
+  bool inSelectabledMood = false;
 
   int selectedIndex = 1;
   @override
@@ -81,7 +76,39 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                 return ListView.builder(
                   itemCount: list.length,
                   itemBuilder: (context, index) {
-                    return TodoItem(todo: list[index]);
+                    if (!inSelectabledMood) {
+                      return TodoItem(
+                          onLongPress: () {
+                            if (inSelectabledMood) {
+                              inSelectabledMood = false;
+                            } else {
+                              inSelectabledMood = true;
+                            }
+                            setState(() {});
+                          },
+                          todo: list[index]);
+                    } else {
+                      bool selected = false;
+                      return SelectedTodoItem(
+                        onLongPress: () {
+                          if (inSelectabledMood) {
+                            inSelectabledMood = false;
+                          } else {
+                            inSelectabledMood = true;
+                          }
+                          setState(() {});
+                        },
+                        todo: list[index],
+                        onTap: () {
+                          if (selected) {
+                            selected = false;
+                          } else {
+                            selected = true;
+                          }
+                          setState(() {});
+                        },
+                      );
+                    }
                   },
                 );
               } else {
