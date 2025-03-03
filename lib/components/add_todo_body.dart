@@ -112,4 +112,11 @@ class _AddTodoBodyState extends State<AddTodoBody> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
 }

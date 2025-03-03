@@ -119,4 +119,12 @@ class _EditTodoBodyState extends State<EditTodoBody> {
       ],
     );
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _descripController.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
 }
