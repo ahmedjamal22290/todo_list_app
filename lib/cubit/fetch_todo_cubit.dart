@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:todo_list_app/constants.dart';
 import 'package:todo_list_app/cubit/fetch_todo_states.dart';

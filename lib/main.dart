@@ -5,6 +5,7 @@ import 'package:todo_list_app/constants.dart';
 import 'package:todo_list_app/cubit/fetch_todo_cubit.dart';
 import 'package:todo_list_app/models/todo_model.dart';
 import 'package:todo_list_app/views/add_todo_view.dart';
+import 'package:todo_list_app/views/edit_todo_view.dart';
 import 'package:todo_list_app/views/home_view.dart';
 
 void main() async {

@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:todo_list_app/constants.dart';
 
 class DsecriptionFieldWidget extends StatelessWidget {
-  const DsecriptionFieldWidget({super.key, required this.onSaved});
+  const DsecriptionFieldWidget(
+      {super.key, required this.onSaved, this.controller});
   final void Function(String?)? onSaved;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       maxLines: 5,
       onSaved: onSaved,
       decoration: InputDecoration(
