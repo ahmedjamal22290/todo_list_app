@@ -9,6 +9,7 @@ import 'package:todo_list_app/constants.dart';
 import 'package:todo_list_app/cubit/fetch_todo_cubit.dart';
 import 'package:todo_list_app/cubit/fetch_todo_states.dart';
 import 'package:todo_list_app/models/todo_model.dart';
+import 'package:todo_list_app/views/edit_todo_view.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
@@ -90,9 +91,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
         Row(
           children: inSelectabledMode
               ? List.generate(buttonsInSelectedMode.length, (index) {
-                  if (selectedIndex == 1 &&
-                      index == 0 &&
-                      selectedTodos.length > 1) {
+                  if ((index == 0 && selectedTodos.length > 1) ||
+                      selectedIndex == 0 && index == 1) {
                     return Container();
                   } else {
                     return optionsMethod(index, context);
@@ -129,6 +129,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                           onLongPress: () {
                             if (inSelectabledMode) {
                               inSelectabledMode = false;
+                              selectedTodos.clear();
                             } else {
                               inSelectabledMode = true;
                             }
@@ -193,13 +194,21 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           BlocProvider.of<FetchTodoCubit>(context).fetchCompleteTodos();
           BlocProvider.of<FetchTodoCubit>(context).fetchPendingTodos();
           setState(() {});
+        } else {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return EditTodoView(todo: selectedTodos.first);
+          }));
         }
       },
       child: Container(
         height: 60,
-        width: selectedIndex == 1 && selectedTodos.length > 1
-            ? MediaQuery.of(context).size.width / 2
-            : MediaQuery.of(context).size.width / 3,
+        width: selectedIndex == 0
+            ? (selectedTodos.length > 1
+                ? MediaQuery.of(context).size.width / 1
+                : MediaQuery.of(context).size.width / 2)
+            : (selectedTodos.length > 1
+                ? MediaQuery.of(context).size.width / 2
+                : MediaQuery.of(context).size.width / 3),
         padding: const EdgeInsets.only(top: 5),
         margin: const EdgeInsets.only(top: 30),
         decoration: BoxDecoration(
