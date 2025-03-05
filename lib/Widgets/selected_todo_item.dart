@@ -3,17 +3,24 @@ import 'package:todo_list_app/constants.dart';
 import 'package:todo_list_app/models/todo_model.dart';
 
 class SelectedTodoItem extends StatefulWidget {
-  const SelectedTodoItem(
-      {super.key, required this.todo, required this.onTap, this.onLongPress});
+  const SelectedTodoItem({
+    super.key,
+    required this.todo,
+    required this.onTap,
+    required this.selected,
+    this.onLongPress,
+  });
+
   final TodoModel todo;
   final void Function()? onTap;
   final void Function()? onLongPress;
+  final bool selected;
+
   @override
   State<SelectedTodoItem> createState() => _SelectedTodoItemState();
 }
 
 class _SelectedTodoItemState extends State<SelectedTodoItem> {
-  bool selected = false;
   Color getTodoColor(TodoModel todo) {
     if (todo.status == 'C') {
       return const Color(0xff43A047);
@@ -63,7 +70,7 @@ class _SelectedTodoItemState extends State<SelectedTodoItem> {
                   ),
                 ),
                 Text(
-                  'DeadLine: ${months[widget.todo.date.month]} ${widget.todo.date.day},${widget.todo.date.year}',
+                  'DeadLine: ${months[widget.todo.date.month]} ${widget.todo.date.day}, ${widget.todo.date.year}',
                   style: TextStyle(
                     decoration: widget.todo.status == 'O'
                         ? TextDecoration.lineThrough
@@ -76,20 +83,11 @@ class _SelectedTodoItemState extends State<SelectedTodoItem> {
               ],
             ),
             const Spacer(),
-            IconButton(
-                onPressed: () {
-                  if (selected) {
-                    selected = false;
-                  } else {
-                    selected = true;
-                  }
-                  setState(() {});
-                },
-                icon: Icon(
-                  selected ? Icons.circle : Icons.circle_outlined,
-                  size: 32,
-                  color: kHighlightColor,
-                ))
+            Icon(
+              widget.selected ? Icons.circle : Icons.circle_outlined,
+              size: 32,
+              color: kHighlightColor,
+            )
           ],
         ),
       ),
