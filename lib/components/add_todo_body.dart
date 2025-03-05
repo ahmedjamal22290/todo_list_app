@@ -23,6 +23,7 @@ class _AddTodoBodyState extends State<AddTodoBody> {
   final TextEditingController _dateController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey();
   TodoModel todo = TodoModel(title: '', date: DateTime.now(), status: 'P');
+  late double height = 0;
   @override
   void initState() {
     super.initState();
@@ -34,8 +35,10 @@ class _AddTodoBodyState extends State<AddTodoBody> {
       key: formKey,
       child: Stack(
         children: [
-          Container(
-            height: MediaQuery.sizeOf(context).height * 0.49,
+          AnimatedContainer(
+            curve: Curves.easeOut,
+            duration: const Duration(milliseconds: 600),
+            height: height,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(80),
@@ -50,7 +53,9 @@ class _AddTodoBodyState extends State<AddTodoBody> {
                 onChanged: (value) {
                   _controller.text = value;
                   todo.title = value;
-                  setState(() {});
+                  setState(() {
+                    height = MediaQuery.of(context).size.height * 0.49;
+                  });
                 },
               ),
               const SizedBox(height: 30),
@@ -76,6 +81,8 @@ class _AddTodoBodyState extends State<AddTodoBody> {
                     );
                     if (picked != null) {
                       setState(() {
+                        height = MediaQuery.of(context).size.height * 0.49;
+
                         _dateController.text =
                             "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
                         todo.date = picked;
