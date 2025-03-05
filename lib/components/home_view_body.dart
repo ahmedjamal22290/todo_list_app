@@ -95,46 +95,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                       selectedTodos.length > 1) {
                     return Container();
                   } else {
-                    return GestureDetector(
-                      onTap: () {
-                        if (index == 2) {
-                          deleteItems();
-                          inSelectabledMode = false;
-                          BlocProvider.of<FetchTodoCubit>(context)
-                              .fetchPendingTodos();
-                          setState(() {});
-                        } else if (index == 1) {
-                          completeItems();
-                          inSelectabledMode = false;
-                          BlocProvider.of<FetchTodoCubit>(context)
-                              .fetchCompleteTodos();
-                          BlocProvider.of<FetchTodoCubit>(context)
-                              .fetchPendingTodos();
-                          setState(() {});
-                        }
-                      },
-                      child: Container(
-                        height: 60,
-                        width: selectedIndex == 1 && selectedTodos.length > 1
-                            ? MediaQuery.of(context).size.width / 2
-                            : MediaQuery.of(context).size.width / 3,
-                        padding: const EdgeInsets.only(top: 5),
-                        margin: const EdgeInsets.only(top: 30),
-                        decoration: BoxDecoration(
-                            border: const Border.symmetric(
-                                vertical: BorderSide(
-                                    color: Colors.white, width: 0.9)),
-                            color: kHighlightColor),
-                        child: Center(
-                            child: Text(
-                          buttonsInSelectedMode[index],
-                          style: const TextStyle(
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )),
-                      ),
-                    );
+                    return optionsMethod(index, context);
                   }
                 })
               : List.generate(
@@ -175,30 +136,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                           },
                           todo: list[index]);
                     } else {
-                      return SelectedTodoItem(
-                        onLongPress: () {
-                          if (inSelectabledMode) {
-                            inSelectabledMode = false;
-                          } else {
-                            inSelectabledMode = true;
-                          }
-                          setState(() {});
-                        },
-                        todo: list[index],
-                        onTap: () {
-                          if (selected[index]) {
-                            selected[index] = false;
-                            selectedTodos.remove(list[index]);
-                            log('remove todo ');
-                          } else {
-                            selectedTodos.add(list[index]);
-                            log('add todo ');
-                            selected[index] = true;
-                          }
-                          setState(() {});
-                        },
-                        selected: selected[index],
-                      );
+                      return selectingItemsMethod(list, index);
                     }
                   },
                 );
@@ -211,6 +149,72 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           ),
         ),
       ],
+    );
+  }
+
+  SelectedTodoItem selectingItemsMethod(list, int index) {
+    return SelectedTodoItem(
+      onLongPress: () {
+        if (inSelectabledMode) {
+          inSelectabledMode = false;
+        } else {
+          inSelectabledMode = true;
+        }
+        setState(() {});
+      },
+      todo: list[index],
+      onTap: () {
+        if (selected[index]) {
+          selected[index] = false;
+          selectedTodos.remove(list[index]);
+          log('remove todo ');
+        } else {
+          selectedTodos.add(list[index]);
+          log('add todo ');
+          selected[index] = true;
+        }
+        setState(() {});
+      },
+      selected: selected[index],
+    );
+  }
+
+  GestureDetector optionsMethod(int index, BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        if (index == 2) {
+          deleteItems();
+          inSelectabledMode = false;
+          BlocProvider.of<FetchTodoCubit>(context).fetchPendingTodos();
+          setState(() {});
+        } else if (index == 1) {
+          completeItems();
+          inSelectabledMode = false;
+          BlocProvider.of<FetchTodoCubit>(context).fetchCompleteTodos();
+          BlocProvider.of<FetchTodoCubit>(context).fetchPendingTodos();
+          setState(() {});
+        }
+      },
+      child: Container(
+        height: 60,
+        width: selectedIndex == 1 && selectedTodos.length > 1
+            ? MediaQuery.of(context).size.width / 2
+            : MediaQuery.of(context).size.width / 3,
+        padding: const EdgeInsets.only(top: 5),
+        margin: const EdgeInsets.only(top: 30),
+        decoration: BoxDecoration(
+            border: const Border.symmetric(
+                vertical: BorderSide(color: Colors.white, width: 0.9)),
+            color: kHighlightColor),
+        child: Center(
+            child: Text(
+          buttonsInSelectedMode[index],
+          style: const TextStyle(
+            fontSize: 23,
+            fontWeight: FontWeight.bold,
+          ),
+        )),
+      ),
     );
   }
 }
