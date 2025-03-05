@@ -75,7 +75,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
 
     for (var todo in selectedTodos) {
       todo.status = 'C';
-      box.put(todo.key, todo); // Update Hive box properly
+      box.put(todo.key, todo);
     }
     selectedTodos.clear();
 

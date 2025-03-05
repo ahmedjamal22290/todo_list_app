@@ -25,6 +25,7 @@ class TodoListApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          fontFamily: 'Poppins',
           brightness: Brightness.dark,
         ),
         routes: {
