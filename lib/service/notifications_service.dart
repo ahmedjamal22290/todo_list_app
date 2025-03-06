@@ -7,7 +7,7 @@ class NotiService {
   Future<void> initNotification() async {
     if (_isInialized) return;
     const initAndroidSetting =
-        AndroidInitializationSettings('@mipmap-hdpi/ic_launcher.png');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const initIosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -18,23 +18,31 @@ class NotiService {
       iOS: initIosSettings,
     );
     await notificationsPlugin.initialize(initSettings);
+    _isInialized = true;
   }
 
   NotificationDetails notificationDetails() {
     return const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'Daily channel Id',
-          'Daily noti',
-          channelDescription: 'daily noti descrip',
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
-        iOS: DarwinNotificationDetails());
+      android: AndroidNotificationDetails(
+        'daily_channel_id',
+        'Daily Notifications',
+        channelDescription: 'This channel is used for daily notifications',
+        importance: Importance.high,
+        priority: Priority.high,
+        playSound: true,
+        enableVibration: true,
+      ),
+      iOS: DarwinNotificationDetails(),
+    );
   }
 
-  Future<void> showNotificatino(
+  Future<void> showNotification(
       {int id = 0, String? title, String? body}) async {
     return notificationsPlugin.show(
-        id, title, body, const NotificationDetails());
+      id,
+      title,
+      body,
+      notificationDetails(),
+    );
   }
 }

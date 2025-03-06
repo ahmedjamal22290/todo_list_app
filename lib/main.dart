@@ -6,12 +6,20 @@ import 'package:todo_list_app/cubit/fetch_todo_cubit.dart';
 import 'package:todo_list_app/models/todo_model.dart';
 import 'package:todo_list_app/views/add_todo_view.dart';
 import 'package:todo_list_app/views/home_view.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+Future<void> requestPermissions() async {
+  if (await Permission.notification.isDenied) {
+    await Permission.notification.request();
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(TodoModelAdapter());
   await Hive.openBox<TodoModel>(kBoxName);
+  await requestPermissions();
   runApp(const TodoListApp());
 }
 
@@ -25,7 +33,6 @@ class TodoListApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          fontFamily: 'Poppins',
           brightness: Brightness.dark,
         ),
         routes: {

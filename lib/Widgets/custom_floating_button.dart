@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list_app/service/notifications_service.dart';
 import 'package:todo_list_app/views/add_todo_view.dart';
 
 class AddingFloatingButton extends StatelessWidget {
@@ -9,7 +10,13 @@ class AddingFloatingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {
+      onPressed: () async {
+        NotiService notiService = NotiService();
+        await notiService.initNotification();
+        notiService.showNotification(
+          title: "Test",
+          body: "Test Body",
+        );
         Navigator.pushNamed(context, AddTodoView.id);
       },
       backgroundColor: const Color(0xff2A2A2A),
