@@ -62,8 +62,8 @@ class NotiService {
     required int minute,
   }) async {
     final now = tz.TZDateTime.now(tz.local);
-    var scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+    var scheduledDate = tz.TZDateTime(tz.local, now.year, now.month,
+        now.add(const Duration(days: 1)).day, hour, minute);
     await notificationsPlugin.zonedSchedule(
         id, title, body, scheduledDate, const NotificationDetails(),
         uiLocalNotificationDateInterpretation:
