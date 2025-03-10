@@ -8,7 +8,8 @@ class TodoModel extends HiveObject {
       {required this.date,
       this.description,
       required this.status,
-      required this.title});
+      required this.title,
+      this.isScheduled = false});
   @HiveField(0)
   String title;
   @HiveField(1)
@@ -17,6 +18,8 @@ class TodoModel extends HiveObject {
   DateTime date;
   @HiveField(3)
   String status;
+  @HiveField(4)
+  bool isScheduled;
 }
 
 // status => P(Pending) : O(Overdue) : C(Complete)

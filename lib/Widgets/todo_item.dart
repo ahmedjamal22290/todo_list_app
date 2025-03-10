@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_app/constants.dart';
 import 'package:todo_list_app/cubit/fetch_todo_cubit.dart';
 import 'package:todo_list_app/models/todo_model.dart';
+import 'package:todo_list_app/service/notifications_service.dart';
 import 'package:todo_list_app/views/edit_todo_view.dart';
 
 class TodoItem extends StatefulWidget {
@@ -21,9 +22,21 @@ class _TodoItemState extends State<TodoItem> {
     } else if (todo.status == 'O') {
       return const Color(0xffE53935);
     } else if (todo.status == 'P') {
-      return todo.date.difference(DateTime.now()).inDays <= 1
-          ? const Color(0xFFCD7B00)
-          : const Color(0xff2A2A2A);
+      bool flag = todo.date.difference(DateTime.now()).inDays <= 1;
+      if (flag && widget.todo.isScheduled == false) {
+        widget.todo.isScheduled = true;
+        widget.todo.save();
+        NotiService().scheduleNotification(
+            title: 'Urgent Todo',
+            body: widget.todo.title,
+            hour: todo.date.hour,
+            minute: widget.todo.date.minute);
+        NotiService().showNotification(
+          title: 'Urgent Todo',
+          body: widget.todo.title,
+        );
+      }
+      return flag ? const Color(0xFFCD7B00) : const Color(0xff2A2A2A);
     }
     return Colors.grey;
   }

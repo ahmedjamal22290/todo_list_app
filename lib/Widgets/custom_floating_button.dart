@@ -11,12 +11,6 @@ class AddingFloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () async {
-        NotiService notiService = NotiService();
-        await notiService.initNotification();
-        notiService.showNotification(
-          title: "Test",
-          body: "Test Body",
-        );
         Navigator.pushNamed(context, AddTodoView.id);
       },
       backgroundColor: const Color(0xff2A2A2A),

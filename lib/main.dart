@@ -4,6 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:todo_list_app/constants.dart';
 import 'package:todo_list_app/cubit/fetch_todo_cubit.dart';
 import 'package:todo_list_app/models/todo_model.dart';
+import 'package:todo_list_app/service/notifications_service.dart';
 import 'package:todo_list_app/views/add_todo_view.dart';
 import 'package:todo_list_app/views/home_view.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,6 +21,7 @@ void main() async {
   Hive.registerAdapter(TodoModelAdapter());
   await Hive.openBox<TodoModel>(kBoxName);
   await requestPermissions();
+  await NotiService().initNotification();
   runApp(const TodoListApp());
 }
 
